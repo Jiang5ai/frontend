@@ -1,12 +1,29 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <!--      <router-link to="/">Home</router-link> |-->
+      <!--      <router-link to="/about">About</router-link>-->
+      <Navigation></Navigation>
     </div>
-    <router-view/>
+<!--    <router-view/>-->
   </div>
 </template>
+
+<script>
+import Navigation from '@/views/Navigation.vue'
+
+
+export default {
+  name: 'Home',
+  components: {
+    Navigation
+  },
+  data() {
+    return {}
+  },
+}
+</script>>
+
 
 <style>
 #app {
@@ -17,9 +34,9 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
+/*#nav {*/
+/*  padding: 30px;*/
+/*}*/
 
 #nav a {
   font-weight: bold;
@@ -28,5 +45,9 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+body {
+  display: block;
+  margin: 0px;
 }
 </style>
