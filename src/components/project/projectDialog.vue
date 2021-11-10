@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title=showTitle :visible.sync="isVisible" @close="cancelProject()">
+  <el-dialog :title=showTitle :visible.sync="isVisible" @close="cancelProject()">
     <el-form :model="form" :rules="rules" ref="from" label-width="80px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name"></el-input>
@@ -50,12 +50,7 @@ export default {
     }
   },
   created() {
-    if (this.pid === 0) {
-      this.showTitle="新建项目"
-    }
-    else {
-      this.showTitle="编辑项目"
-    }
+
   },
   // 调用方法
   methods: {
@@ -84,7 +79,7 @@ export default {
   watch: {
     showStatus(val) {
       this.isVisible = val;//新增isVisible的watch，监听变更并同步到isVisible上
-    }
+    },
   },
 }
 </script>
