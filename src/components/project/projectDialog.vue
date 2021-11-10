@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="创建项目" :visible.sync="isVisible" @close="cancelProject()">
+  <el-dialog title=showTitle :visible.sync="isVisible" @close="cancelProject()">
     <el-form :model="form" :rules="rules" ref="from" label-width="80px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name"></el-input>
@@ -30,9 +30,10 @@ import ProjectApi from "@/request/project";
 
 export default {
   name: "projectDialog",
-  props: ["showStatus"],
+  props: ["showStatus", "pid"],
   data() {
     return {
+      showTitle: '',
       form: {
         name: '',
         status: true,
@@ -46,6 +47,14 @@ export default {
       formLabelWidth: '100px',
       // 定义一个isVisible来接收传递过来的值
       isVisible: this.showStatus
+    }
+  },
+  created() {
+    if (this.pid === 0) {
+      this.showTitle="新建项目"
+    }
+    else {
+      this.showTitle="编辑项目"
     }
   },
   // 调用方法

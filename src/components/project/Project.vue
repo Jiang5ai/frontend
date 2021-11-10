@@ -41,14 +41,27 @@
             label="操作"
             min-width="15%">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
+            <el-button @click="showEdit(scope.row)" type="text" size="small">编辑</el-button>
             <el-button type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
+      <div class="foot-page">
+        <!--   分页     -->
+        <el-pagination
+            background
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :page-sizes="[5,10, 20, 30, 40]"
+            :page-size=query.size
+            layout="total, sizes, prev, pager, next, jumper"
+            :total=total>
+        </el-pagination>
+      </div>
     </el-card>
     <!--showDialog=true 展示组件    -->
-    <projectDialog :showStatus="showDialog" @cancel="cancelProject"></projectDialog>
+    <projectDialog :showStatus="showDialog" @cancel="cancelProject" :pid=projectId></projectDialog>
+
   </div>
 </template>
 
@@ -65,8 +78,10 @@ export default {
   },
   data() {
     return {
+      projectId:0,
       tableData: [],
       showDialog: false,
+      total: 0,
       query: {
         page: 1,
         size: 5,
@@ -80,6 +95,7 @@ export default {
       console.log("resp-->", resp)
       if (resp.success === true) {
         this.tableData = resp.data.projectList
+        this.total = resp.data.total
       } else {
         this.$message.error(resp.error.message);
       }
@@ -89,10 +105,29 @@ export default {
       this.showDialog = true
       console.log("显示创建窗口")
     },
-   //接收子组件的回调
-    cancelProject(){
+    showEdit(row) {
+      console.log("row",row)
+      this.projectId=row.id
+      this.showDialog = true
+
+    },
+    //接收子组件的回调
+    cancelProject() {
       console.log("自组件把自己关掉了")
-      this.showDialog= false
+      this.showDialog = false
+      this.projectId=0
+    },
+    //修改每页显示个数
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.query.size = val
+      this.initProject()
+    },
+    //当前第几页
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.query.page = val
+      this.initProject()
     }
   },
   created() {
@@ -112,6 +147,9 @@ export default {
 
 .filter-line {
   float: right
+}
 
+.foot-page {
+  margin-top: 70px;
 }
 </style>
