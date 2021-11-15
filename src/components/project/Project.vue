@@ -18,13 +18,19 @@
         <el-table-column
             prop="name"
             label="名称"
-            min-width="30%">
+            min-width="20%">
         </el-table-column>
 
         <el-table-column
             prop="describe"
             label="描述"
-            min-width="45%">
+            min-width="25%">
+        </el-table-column>
+
+        <el-table-column
+            prop="create_time"
+            label="创建时间"
+            min-width="30%">
         </el-table-column>
 
         <el-table-column
