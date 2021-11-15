@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Project from '../components/project/Project.vue'
-import Module from '../components/Module.vue'
-import testCase from '../components/testCase.vue'
-import testTask from '../components/testTask.vue'
+import Module from '../components/module/Module.vue'
+import testCase from '../components/testCase/testCase.vue'
+import testTask from '../components/testTask/testTask.vue'
 
 Vue.use(VueRouter)
 

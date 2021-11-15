@@ -20,7 +20,7 @@
         <router-link to="/module">
           <el-menu-item index="2">
             <i class="el-icon-s-management"></i>
-            <span slot="title">模块管理</span>
+            <span slot="title" >模块管理</span>
           </el-menu-item>
         </router-link>
 
@@ -54,7 +54,6 @@
         </el-dropdown>
         <span>王小虎</span>
       </el-header>
-
       <el-main>
         <router-view></router-view>
       </el-main>
@@ -63,6 +62,7 @@
 </template>
 
 <script>
+
 export default {
   data() {
     const item = {

@@ -6,24 +6,23 @@ class ProjectApi {
     getProjects(data) {
         return request.get('/v1/project/', data)
     }
-
+    //获取单个项目接口
+    getProject(pid) {
+        return request.get('/v1/project/'+pid+'/')
+    }
     // 创建项目接口
     createProject(data) {
-      return request.post('v1/project/', data)
+      return request.post('/v1/project/', data)
+    }
+    // 删除项目
+    deleteProject(pid) {
+      return request.delete('/v1/project/'+pid+'/')
     }
 
-    // getProject(pid) {
-    //   return request.get('/api/v1/project/detail', { id: pid })
-    // }
-
-    // deleteProject(pid) {
-    //   return request.delete('/api/v1/project/delete', { id: pid })
-    // }
-
-
-    // updateProject(data) {
-    //   return request.put('/api/v1/project/update', data)
-    // }
+    // 更新项目接口
+    updateProject(pid,data) {
+      return request.put('/v1/project/'+pid+'/', data)
+    }
 
 }
 

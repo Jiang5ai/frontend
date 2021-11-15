@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :title=showTitle :visible.sync="isVisible" @close="cancelProject()">
-    <el-form v-if="inResize === true" :model="form" :rules="rules" ref="form" label-width="80px">
+  <el-dialog :title=showTitle :visible.sync="isVisible" @close="cancelProject('form')">
+    <el-form :model="form" :rules="rules" ref="form" label-width="80px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -18,7 +18,7 @@
       <el-form-item>
         <div class="dialog-footer">
           <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-          <el-button @click="cancelProject()">取消</el-button>
+          <el-button @click="cancelProject('form')">取消</el-button>
         </div>
       </el-form-item>
     </el-form>
@@ -33,7 +33,6 @@ export default {
   props: ["showStatus", "pid"],
   data() {
     return {
-      inResize:true,
       showTitle: '',
       form: {
         name: '',
@@ -53,8 +52,11 @@ export default {
   // 调用方法
   methods: {
     //  关闭自己
-    cancelProject() {
+    cancelProject(formName) {
       this.$emit('cancel', {})
+      // 关闭弹窗后清空错误提示以及输入的字段内容(有个bug，新建成功后关闭页面会报错)
+      console.log('-------',this.$refs[formName])
+      this.$refs[formName].resetFields();
     },
     //判断是否新增
     createOrEdit() {
@@ -84,7 +86,7 @@ export default {
             }
           } else {
             console.log("编辑保存")
-            const resp = await ProjectApi.updateProject(this.pid, this.form)
+            const resp = await ProjectApi.updateProject(this.pid,this.form)
             if (resp.success === true) {
               //创建成功后关闭弹窗，调用父组件的获取列表接口
               this.$message.success("更新成功");
@@ -117,13 +119,6 @@ export default {
       this.createOrEdit()
     },
   },
-  created() {
-    // 强制刷新
-    this.inResize=false;
-    this.$nextTick(()=>{
-      this.inResize=true;
-    })
-  }
 }
 </script>
 

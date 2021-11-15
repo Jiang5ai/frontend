@@ -1,23 +1,28 @@
 <template>
-  <div class="project">
+  <div class="module">
     <div style="padding-bottom: 10px;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>项目管理</el-breadcrumb-item>
+        <el-breadcrumb-item>模块管理</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-card class="box-card">
       <div class="filter-line">
-        <el-button @click='showCreate()' type="primary" size="medium ">创建</el-button>
+        <!--        <el-button @click='showCreate()' type="primary" size="medium ">创建</el-button>-->
       </div>
       <el-table
           :data="tableData"
-          style="width: 100%"
-          v-loading="loading">
+          style="width: 100%">
 
         <el-table-column
             prop="name"
-            label="名称"
+            label="模块名称"
+            min-width="30%">
+        </el-table-column>
+
+        <el-table-column
+            prop="module_ForeignKey_project"
+            label="关联项目名称"
             min-width="30%">
         </el-table-column>
 
@@ -36,14 +41,14 @@
             <span v-else><el-tag type="danger">关闭</el-tag></span>
           </template>
         </el-table-column>
-        <!--       操作栏        -->
+        操作栏
         <el-table-column
             fixed="right"
             label="操作"
             min-width="15%">
           <template slot-scope="scope">
-            <el-button @click="showEdit(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button @click="deleteProject(scope.row)" type="text" size="small">删除</el-button>
+<!--            <el-button @click="showEdit(scope.row)" type="text" size="small">编辑</el-button>-->
+            <el-button @click="deleteModule(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -61,28 +66,29 @@
       </div>
     </el-card>
     <!--showDialog=true 展示组件    -->
-    <projectDialog :showStatus="showDialog" @cancel="cancelProject" :pid=projectId></projectDialog>
+    <!--    <projectDialog :showStatus="showDialog" @cancel="cancelProject" :pid=projectId></projectDialog>-->
 
   </div>
 </template>
 
+
 <script>
-import ProjectApi from "../../request/project"
-import projectDialog from "@/components/project/projectDialog";
+import ModuleApi from "../../request/module"
+// import ProjectApi from "@/request/project";
+// import projectDialog from "@/components/project/projectDialog";
 
 export default {
-  name: "Project",
+  name: "Module",
   components: {
     // eslint-disable-next-line vue/no-unused-components
     //新增项目弹窗组件
-    projectDialog
+    // projectDialog
   },
   data() {
     return {
-      loading: true,
-      projectId: 0,
+      moduleId: 0,
       tableData: [],
-      showDialog: false,
+      // showDialog: false,
       total: 0,
       query: {
         page: 1,
@@ -92,47 +98,16 @@ export default {
   },
   // 调用方法
   methods: {
-    // 获取项目列表
-    async initProject() {
-      const resp = await ProjectApi.getProjects(this.query)
-      // console.log("获取项目列表resp-->", resp)
+    // 获取模块列表
+    async initModule() {
+      const resp = await ModuleApi.getModules(this.query)
+      console.log("获取模块列表resp-->", resp)
       if (resp.success === true) {
-        this.tableData = resp.data.projectList
+        this.tableData = resp.data.moduleList
         this.total = resp.data.total
-
       } else {
         this.$message.error(resp.error.message);
       }
-      this.loading=false
-    },
-    //删除项目接口调用
-    async deleteProject(row) {
-      this.projectId = row.id
-      const resp = await ProjectApi.deleteProject(this.projectId)
-      if (resp.success === true) {
-        this.$message.success("删除成功")
-        await this.initProject()
-      } else {
-        this.$message.error(resp.error.message)
-      }
-    },
-    //显示创建窗口
-    showCreate() {
-      this.showDialog = true
-      console.log("显示创建窗口")
-    },
-    //显示编辑窗口
-    showEdit(row) {
-      console.log("row", row)
-      this.projectId = row.id
-      this.showDialog = true
-
-    },
-    //接收子组件的回调
-    cancelProject() {
-      console.log("子组件把自己关掉了")
-      this.showDialog = false
-      this.projectId = 0
     },
     //修改每页显示个数
     handleSizeChange(val) {
@@ -145,20 +120,27 @@ export default {
       console.log(`当前页: ${val}`);
       this.query.page = val
       this.initProject()
+    },
+    // 删除模块
+    async deleteModule(row) {
+      console.log("row---->",row.id)
+      this.moduleId = row.id
+      const resp = await ModuleApi.deleteModule(this.moduleId)
+      if (resp.success === true) {
+        this.$message.success("删除成功")
+        await this.initModule()
+      } else {
+        this.$message.error(resp.error.message)
+      }
     }
   },
-  created() {
-    console.log("created---自动被执行")
-    console.log("父组件---->", this.showDialog)
-  },
   mounted() {
-    console.log("mounted---自动被执行")
-    //调用获取项目列表接口方法
-    this.initProject()
+    this.initModule()
   }
 }
 
 </script>
+
 
 <style scoped>
 
