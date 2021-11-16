@@ -122,7 +122,8 @@ export default {
             }
           } else {
             console.log("编辑保存")
-            const resp = await ModuleApi.updateModule(this.pid, this.form)
+            console.log(this.form)
+            const resp = await ModuleApi.updateModule(this.mid, this.form)
             if (resp.success === true) {
               //创建成功后关闭弹窗，调用父组件的获取列表接口
               this.$message.success("更新成功");
