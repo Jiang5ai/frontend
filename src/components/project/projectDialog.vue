@@ -105,7 +105,6 @@ export default {
       console.log("resp-->", resp)
       if (resp.success === true) {
         this.form = resp.data
-        this.total = resp.data.total
       } else {
         this.$message.error(resp.error.message);
       }

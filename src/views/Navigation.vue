@@ -3,7 +3,7 @@
     <el-aside width="200px" style="background-color: rgb(84, 92, 100)">
       <img class="logo" alt="Vue logo" src="../assets/logo.png">
       <el-menu
-          default-active="1"
+          default-active=1
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"

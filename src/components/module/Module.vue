@@ -8,7 +8,7 @@
     </div>
     <el-card class="box-card">
       <div class="filter-line">
-        <!--        <el-button @click='showCreate()' type="primary" size="medium ">创建</el-button>-->
+        <el-button @click='showCreate()' type="primary" size="medium ">创建</el-button>
       </div>
       <el-table
           :data="tableData"
@@ -53,7 +53,7 @@
             label="操作"
             min-width="15%">
           <template slot-scope="scope">
-<!--            <el-button @click="showEdit(scope.row)" type="text" size="small">编辑</el-button>-->
+            <el-button @click="showEdit(scope.row)" type="text" size="small">编辑</el-button>
             <el-button @click="deleteModule(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
@@ -72,7 +72,7 @@
       </div>
     </el-card>
     <!--showDialog=true 展示组件    -->
-    <!--    <projectDialog :showStatus="showDialog" @cancel="cancelProject" :pid=projectId></projectDialog>-->
+    <moduleDialog :showStatus="showDialog" @cancel="cancelModule" :mid=moduleId></moduleDialog>
 
   </div>
 </template>
@@ -80,21 +80,20 @@
 
 <script>
 import ModuleApi from "../../request/module"
-// import ProjectApi from "@/request/project";
-// import projectDialog from "@/components/project/projectDialog";
+import moduleDialog from "@/components/module/moduleDialog";
 
 export default {
   name: "Module",
   components: {
-    // eslint-disable-next-line vue/no-unused-components
     //新增项目弹窗组件
-    // projectDialog
+    // eslint-disable-next-line vue/no-unused-components
+    moduleDialog
   },
   data() {
     return {
       moduleId: 0,
       tableData: [],
-      // showDialog: false,
+      showDialog: false,
       total: 0,
       query: {
         page: 1,
@@ -115,21 +114,37 @@ export default {
         this.$message.error(resp.error.message);
       }
     },
+    //接收子组件的回调
+    cancelModule() {
+      console.log("子组件把自己关掉了")
+      this.showDialog = false
+      // 重置moduleId
+      this.moduleId = 0
+    },
+    showCreate() {
+      this.showDialog = true
+    },
+    //显示编辑窗口
+    showEdit(row) {
+      console.log("row", row)
+      this.moduleId = row.id
+      this.showDialog = true
+    },
     //修改每页显示个数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
       this.query.size = val
-      this.initProject()
+      this.initModule()
     },
     //当前第几页
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
       this.query.page = val
-      this.initProject()
+      this.initModule()
     },
     // 删除模块
     async deleteModule(row) {
-      console.log("row---->",row.id)
+      console.log("row---->", row.id)
       this.moduleId = row.id
       const resp = await ModuleApi.deleteModule(this.moduleId)
       if (resp.success === true) {
