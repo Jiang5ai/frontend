@@ -18,25 +18,29 @@
         <el-table-column
             prop="name"
             label="名称"
-            min-width="20%">
+            min-width="20%"
+            align="center">
         </el-table-column>
 
         <el-table-column
             prop="describe"
             label="描述"
-            min-width="25%">
+            min-width="25%"
+            align="center">
         </el-table-column>
 
         <el-table-column
             prop="create_time"
             label="创建时间"
-            min-width="30%">
+            min-width="30%"
+            align="center">
         </el-table-column>
 
         <el-table-column
             prop="status"
             label="状态"
-            min-width="25%">
+            min-width="25%"
+            align="center">
           <template slot-scope="scope">
             <span v-if="scope.row.status === true"><el-tag type="success">开启</el-tag></span>
             <span v-else><el-tag type="danger">关闭</el-tag></span>
@@ -74,7 +78,7 @@
 
 <script>
 import ProjectApi from "../../request/project"
-import projectDialog from "@/components/project/projectDialog";
+import projectDialog from "@/components/project/ProjectDialog";
 
 export default {
   name: "Project",
@@ -109,18 +113,24 @@ export default {
       } else {
         this.$message.error(resp.error.message);
       }
-      this.loading=false
+      this.loading = false
     },
     //删除项目接口调用
     async deleteProject(row) {
-      this.projectId = row.id
-      const resp = await ProjectApi.deleteProject(this.projectId)
-      if (resp.success === true) {
-        this.$message.success("删除成功")
-        await this.initProject()
-      } else {
-        this.$message.error(resp.error.message)
-      }
+      this.$confirm('是否确认删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(async () => {
+        this.projectId = row.id
+        const resp = await ProjectApi.deleteProject(this.projectId)
+        if (resp.success === true) {
+          this.$message.success("删除成功")
+          await this.initProject()
+        } else {
+          this.$message.error(resp.error.message)
+        }
+      })
     },
     //显示创建窗口
     showCreate() {

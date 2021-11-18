@@ -1,9 +1,9 @@
 <template>
-  <div class="module">
+  <div class="case">
     <div style="padding-bottom: 10px;">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>模块管理</el-breadcrumb-item>
+        <el-breadcrumb-item>用例管理</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
     <el-card class="box-card">
@@ -17,43 +17,39 @@
 
         <el-table-column
             prop="name"
-            label="模块名称"
-            min-width="25%"
+            label="用例名称"
+            min-width="10%"
             align="center">
         </el-table-column>
 
         <el-table-column
-            prop="module_ForeignKey_project"
-            label="关联项目名称"
-            min-width="25%"
+            prop="module_name"
+            label="关联模块名称"
+            min-width="15%"
             align="center">
         </el-table-column>
 
         <el-table-column
-            prop="describe"
-            label="描述"
+            prop="url"
+            label="url"
             min-width="20%"
             align="center">
         </el-table-column>
 
         <el-table-column
-            prop="create_time"
-            label="创建时间"
-            min-width="30%"
+            prop="method"
+            label="method"
+            min-width="10%"
             align="center">
         </el-table-column>
 
         <el-table-column
-            prop="status"
-            label="状态"
+            prop="assert_type"
+            label="断言方式"
             min-width="25%"
             align="center">
-          <template slot-scope="scope">
-            <span v-if="scope.row.status === true"><el-tag type="success">开启</el-tag></span>
-            <span v-else><el-tag type="danger">关闭</el-tag></span>
-          </template>
         </el-table-column>
-        操作栏
+<!--        操作栏-->
         <el-table-column
             fixed="right"
             label="操作"
@@ -78,27 +74,27 @@
       </div>
     </el-card>
     <!--showDialog=true 展示组件    -->
-    <moduleDialog :showStatus="showDialog" @cancel="cancelModule" :mid=moduleId></moduleDialog>
+<!--    <caseDialog :showStatus="showDialog" @cancel="cancelModule" :cid=caseId></caseDialog>-->
 
   </div>
 </template>
 
 
 <script>
-import ModuleApi from "../../request/module"
-import moduleDialog from "@/components/module/ModuleDialog";
+import CaseApi from "../../request/case"
+// import caseDialog from "@/components/case/CaseDialog";
 
 export default {
   name: "Module",
   components: {
     //新增项目弹窗组件
     // eslint-disable-next-line vue/no-unused-components
-    moduleDialog
+    // caseDialog
   },
   data() {
     return {
-      loading: true,
-      moduleId: 0,
+      loading:true,
+      caseId: 0,
       tableData: [],
       showDialog: false,
       total: 0,
@@ -110,12 +106,12 @@ export default {
   },
   // 调用方法
   methods: {
-    // 获取模块列表
-    async initModule() {
-      const resp = await ModuleApi.getModules(this.query)
-      console.log("获取模块列表resp-->", resp)
+    // 获取用例列表
+    async initCase() {
+      const resp = await CaseApi.getCases(this.query)
+      console.log("获取用例列表resp-->", resp)
       if (resp.success === true) {
-        this.tableData = resp.data.moduleList
+        this.tableData = resp.data.caseList
         this.total = resp.data.total
       } else {
         this.$message.error(resp.error.message);
@@ -126,8 +122,8 @@ export default {
     cancelModule() {
       console.log("子组件把自己关掉了")
       this.showDialog = false
-      // 重置moduleId
-      this.moduleId = 0
+      // 重置caseId
+      this.caseId = 0
     },
     showCreate() {
       this.showDialog = true
@@ -135,7 +131,7 @@ export default {
     //显示编辑窗口
     showEdit(row) {
       console.log("row", row)
-      this.moduleId = row.id
+      this.caseId = row.id
       this.showDialog = true
     },
     //修改每页显示个数
@@ -150,15 +146,15 @@ export default {
       this.query.page = val
       this.initModule()
     },
-    // 删除模块
+    // 删除用例
     async deleteModule(row) {
       this.$confirm('是否确认删除?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
-        this.moduleId = row.id
-        const resp = await ModuleApi.deleteModule(this.moduleId)
+        this.caseId = row.id
+        const resp = await CaseApi.deleteCase(this.caseId)
         if (resp.success === true) {
           this.$message.success("删除成功")
           await this.initModule()
@@ -169,7 +165,7 @@ export default {
     },
   },
   mounted() {
-    this.initModule()
+    this.initCase()
   }
 }
 
