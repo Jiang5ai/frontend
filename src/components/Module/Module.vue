@@ -86,7 +86,7 @@
 
 <script>
 import ModuleApi from "../../request/module"
-import moduleDialog from "@/components/module/ModuleDialog";
+import moduleDialog from "@/components/Module/ModuleDialog";
 
 export default {
   name: "Module",

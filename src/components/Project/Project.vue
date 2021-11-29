@@ -78,7 +78,7 @@
 
 <script>
 import ProjectApi from "../../request/project"
-import projectDialog from "@/components/project/ProjectDialog";
+import projectDialog from "@/components/Project/ProjectDialog";
 
 export default {
   name: "Project",

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Project from '../components/project/Project.vue'
-import Module from '../components/module/Module.vue'
+import Project from '../components/Project/Project.vue'
+import Module from '../components/Module/Module.vue'
 import testCase from '../components/Case/CaseList.vue'
-import testTask from '../components/testTask/testTask.vue'
+import testTask from '../components/Task/Task.vue'
 
 Vue.use(VueRouter)
 
@@ -14,7 +14,7 @@ const routes = [
         component: Project
     },
     {
-        path: '/module',
+        path: '/Module',
         name: 'Module',
         component: Module
     },
