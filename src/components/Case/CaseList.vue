@@ -141,26 +141,19 @@ export default {
       }
       this.loading = false
     },
-    //接收子组件的回调
-    cancelModule() {
-      console.log("子组件把自己关掉了")
-      this.showDialog = false
-      // 重置caseId
-      this.caseId = 0
-    },
     // 显示调试页面
     showDebug() {
       if (this.isList === true) {
         this.isList = false
       } else {
         this.isList = true
+        this.caseId=0
       }
     },
     //显示编辑窗口
     showEdit(row) {
-      console.log("row", row)
       this.caseId = row.id
-      this.showDialog = true
+      this.showDebug()
     },
     //修改每页显示个数
     handleSizeChange(val) {

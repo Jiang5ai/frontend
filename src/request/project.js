@@ -6,6 +6,10 @@ class ProjectApi {
     getProjects(data) {
         return request.get('/v1/project/', data)
     }
+    //根据项目获取模块列表
+    getModuleListByProject(pid,data){
+        return request.get('v1/project/'+pid+'/module/',data)
+    }
     //获取单个项目接口
     getProject(pid) {
         return request.get('/v1/project/'+pid+'/')

@@ -6,7 +6,10 @@ class CaseApi {
     debugCase(data){
         return request.post("/v1/case/debug/",data)
     }
-
+    //断言接口
+    assertCase(data){
+        return request.post("/v1/case/assert/",data)
+    }
     //获取用例列表接口
     getCases(data) {
         return request.get('/v1/case/list/', data)

@@ -165,6 +165,7 @@ export default {
       console.log(val);
       this.getProjectList()
     },
+    // 获取用例详情
     async initCaseInfo() {
       let resp = await CaseApi.getCase(this.cid)
       console.log(resp)
@@ -197,7 +198,7 @@ export default {
       console.log(resp)
       if (resp.success == true) {
         this.api.result = JSON.parse(this.api.result)
-        this.$message.success('断言成功')
+        this.$message.success(resp.message)
       } else {
         this.$message.error(resp.error.message)
       }
@@ -219,12 +220,14 @@ export default {
       }
       this.loading = false
     },
+    // 获取项目对应的模块
     async chanageProject() {
       this.moduleOptions = []
       const query = {page: 1, size: 1000}
-      const resp = await ProjectApi.getModules(this.projectId, query)
+      const resp = await ProjectApi.getModuleListByProject(this.projectId, query)
+      console.log(resp)
       if (resp.success == true) {
-        const ModuleList = resp.data.moduleList
+        const ModuleList = resp.data.modulelist
         for (let i = 0; i < ModuleList.length; i++) {
           this.moduleOptions.push({
             value: ModuleList[i].id.toString(),
@@ -233,6 +236,7 @@ export default {
         }
       }
     },
+    // 保存用例
     async saveCase() {
       if (this.api.url == '') {
         this.$message.error('url不能为空')
