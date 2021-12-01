@@ -18,6 +18,10 @@ class CaseApi {
     getCase(cid) {
         return request.get('/v1/case/'+cid+'/info/')
     }
+    //获取用例树
+    getCaseTree(){
+        return request.get('/v1/case/tree/')
+    }
     // 创建用例接口
     createCase(data) {
         return request.post('/v1/case/create/', data)
