@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title=showTitle :visible.sync="isVisible" @close="cancelProject()">
-    <el-form v-if="inResize === true" :model="form" :rules="rules" ref="form" label-width="80px">
+    <el-form :model="form" :rules="rules" ref="form" label-width="80px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -33,7 +33,6 @@ export default {
   props: ["showStatus", "pid"],
   data() {
     return {
-      inResize:true,
       showTitle: '',
       form: {
         name: '',
@@ -52,9 +51,16 @@ export default {
   },
   // 调用方法
   methods: {
+    init(){
+      console.log('init')
+      this.$nextTick(() => {
+        this.$refs['form'].resetFields()
+      })
+    },
     //  关闭自己
     cancelProject() {
       this.$emit('cancel', {})
+      this.init()
     },
     //判断是否新增
     createOrEdit() {
@@ -116,14 +122,6 @@ export default {
       this.createOrEdit()
     },
   },
-  created() {
-    // 强制刷新
-    console.log("强制刷新")
-    this.inResize=false;
-    this.$nextTick(()=>{
-      this.inResize=true;
-    })
-  }
 }
 </script>
 

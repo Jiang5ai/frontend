@@ -73,6 +73,12 @@ export default {
   },
   // 调用方法
   methods: {
+    init(){
+      console.log('init')
+      this.$nextTick(() => {
+        this.$refs['form'].resetFields()
+      })
+    },
     // 获取项目列表
     async getProject() {
       const resp = await ProjectApi.getProjects(this.query)
@@ -95,6 +101,7 @@ export default {
     //  关闭自己
     cancelModule() {
       this.$emit('cancel', {})
+      this.init()
     },
     //判断是否新增
     createOrEdit() {

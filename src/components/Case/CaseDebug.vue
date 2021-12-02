@@ -68,7 +68,8 @@
         <!--保存用例-->
         <el-collapse-item title="保存用例" name="2">
           <div style="margin-bottom: 10px;">
-            <el-select v-model="projectId" placeholder="请选择项目" @change="chanageProject()" @visible-change="getProjectList">
+            <el-select v-model="projectId" placeholder="请选择项目" @change="chanageProject()"
+                       @visible-change="initProjectList">
               <el-option
                   v-for="(item, index) in projectOptions"
                   :key="index"
@@ -109,6 +110,7 @@ export default {
   props: ['cid'],
   data() {
     return {
+      flag: true,
       methods: [
         {value: 'GET', label: 'GET'},
         {value: 'POST', label: 'POST'},
@@ -168,7 +170,7 @@ export default {
     // 获取用例详情
     async initCaseInfo() {
       let resp = await CaseApi.getCase(this.cid)
-      console.log(resp)
+      console.log("用例详情----->",resp)
       this.api = resp.data
     },
     // 点击发送
@@ -201,6 +203,12 @@ export default {
         this.$message.success(resp.message)
       } else {
         this.$message.error(resp.error.message)
+      }
+    },
+    async initProjectList() {
+      if (this.flag) {
+        await this.getProjectList()
+        this.flag = false
       }
     },
     // 获取项目列表

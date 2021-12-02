@@ -1,6 +1,6 @@
 <template>
   <el-dialog :title=showTitle :visible.sync="isVisible" @close="cancelTask()">
-    <el-form v-if="inResize === true" :model="form" :rules="rules" ref="form" label-width="80px">
+    <el-form :model="form" :rules="rules" ref="form" label-width="80px">
       <el-form-item label="名称" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
@@ -36,7 +36,6 @@ export default {
   props: ["showStatus", "tid"],
   data() {
     return {
-      inResize:true,
       showTitle: "",
       // 定义一个isVisible来接收传递过来的值
       isVisible: this.showStatus,
@@ -92,17 +91,19 @@ export default {
     },
   },
   created() {
-    // 强制刷新
-    this.inResize = false;
-    this.$nextTick(() => {
-      this.inResize = true;
-    })
     this.initCaseTree()
   },
   methods: {
+    init(){
+      console.log('init')
+      this.$nextTick(() => {
+        this.$refs['form'].resetFields()
+      })
+    },
     // 关闭自己
     cancelTask() {
       this.$emit('cancel', {})
+      this.init()
     },
     // 判断是否新增
     createOrEdit() {
