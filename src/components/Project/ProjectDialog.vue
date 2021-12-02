@@ -118,6 +118,7 @@ export default {
   },
   created() {
     // 强制刷新
+    console.log("强制刷新")
     this.inResize=false;
     this.$nextTick(()=>{
       this.inResize=true;

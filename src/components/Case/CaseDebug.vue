@@ -68,7 +68,7 @@
         <!--保存用例-->
         <el-collapse-item title="保存用例" name="2">
           <div style="margin-bottom: 10px;">
-            <el-select v-model="projectId" placeholder="请选择项目" @change="chanageProject()">
+            <el-select v-model="projectId" placeholder="请选择项目" @change="chanageProject()" @visible-change="getProjectList">
               <el-option
                   v-for="(item, index) in projectOptions"
                   :key="index"
@@ -163,7 +163,7 @@ export default {
     },
     handleChange(val) {
       console.log(val);
-      this.getProjectList()
+      // this.getProjectList()
     },
     // 获取用例详情
     async initCaseInfo() {
@@ -205,6 +205,7 @@ export default {
     },
     // 获取项目列表
     async getProjectList() {
+      console.log("获取项目列表")
       const query = {page: 1, size: 1000}
       const resp = await ProjectApi.getProjects(query)
       if (resp.success == true) {

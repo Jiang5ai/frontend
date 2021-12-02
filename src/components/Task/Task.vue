@@ -97,7 +97,6 @@ export default {
       query: {
         page: 1,
         size: 5,
-
       }
     }
   },

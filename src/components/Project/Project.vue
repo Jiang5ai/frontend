@@ -126,6 +126,10 @@ export default {
         const resp = await ProjectApi.deleteProject(this.projectId)
         if (resp.success === true) {
           this.$message.success("删除成功")
+          // 为了在删除最后一页的最后一条数据时能成功跳转回最后一页的上一页
+          let deleteAfterPage = Math.ceil((this.total - 1) / this.query.size)
+          let currentPage = this.query.page > deleteAfterPage ? deleteAfterPage : this.query.page
+          this.query.page = currentPage < 1 ? 1 : currentPage
           await this.initProject()
         } else {
           this.$message.error(resp.error.message)
@@ -146,9 +150,9 @@ export default {
     },
     //接收子组件的回调
     cancelProject() {
-      console.log("子组件把自己关掉了")
       this.showDialog = false
       this.projectId = 0
+      console.log("子组件把自己关掉了----->",this.projectId)
     },
     //修改每页显示个数
     handleSizeChange(val) {

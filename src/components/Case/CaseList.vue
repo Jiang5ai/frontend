@@ -178,6 +178,10 @@ export default {
         const resp = await CaseApi.deleteCase(this.caseId)
         if (resp.success === true) {
           this.$message.success("删除成功")
+          // 为了在删除最后一页的最后一条数据时能成功跳转回最后一页的上一页
+          let deleteAfterPage = Math.ceil((this.total - 1) / this.query.size)
+          let currentPage = this.query.page > deleteAfterPage ? deleteAfterPage : this.query.page
+          this.query.page = currentPage < 1 ? 1 : currentPage
           await this.initModule()
         } else {
           this.$message.error(resp.error.message)

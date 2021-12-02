@@ -3,14 +3,14 @@
     <el-aside width="200px" style="background-color: rgb(84, 92, 100)">
       <img class="logo" alt="Vue logo" src="../assets/logo.png">
       <el-menu
-          default-active=1
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#4BD0FF">
         <!--项目管理-->
         <router-link to="/">
-          <el-menu-item index="1">
+          <el-menu-item index="/">
             <i class="el-icon-menu"></i>
             <span slot="title">项目管理</span>
           </el-menu-item>
@@ -18,7 +18,7 @@
 
         <!--模块管理-->
         <router-link to="/module">
-          <el-menu-item index="2">
+          <el-menu-item index="/module">
             <i class="el-icon-s-management"></i>
             <span slot="title" >模块管理</span>
           </el-menu-item>
@@ -26,7 +26,7 @@
 
         <!--用例管理-->
         <router-link to="/case">
-          <el-menu-item index="3">
+          <el-menu-item index="/case">
             <i class="el-icon-s-grid"></i>
             <span slot="title">用例管理</span>
           </el-menu-item>
@@ -34,7 +34,7 @@
 
         <router-link to="/task">
           <!--任务管理-->
-          <el-menu-item index="4">
+          <el-menu-item index="/task">
             <i class="el-icon-s-claim"></i>
             <span slot="title">任务管理</span>
           </el-menu-item>
@@ -73,6 +73,9 @@ export default {
     return {
       tableData: Array(20).fill(item)
     }
+  },
+  created() {
+    console.log(this.$route.path)
   }
 };
 </script>
