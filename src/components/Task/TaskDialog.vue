@@ -43,6 +43,7 @@ export default {
       form: {
         name: '',
         describe: '',
+        cases:[]
       },
       // 校验规则
       rules: {
@@ -50,38 +51,11 @@ export default {
           {required: true, message: '请输入项目名称', trigger: 'blur'},
         ],
       },
-      data2:[],
-      data: [{
-        label: '项目 1',
-        children: [{
-          label: '模块 1-1',
-          children: [{
-            id: 9,
-            label: '用例 1-1-1'
-          }, {
-            id: 10,
-            label: '用例 1-1-2'
-          }]
-        }]
-      }, {
-        label: '项目 2',
-        children: [{
-          label: '模块 2-1'
-        }, {
-          label: '模块 2-2'
-        }]
-      }, {
-        label: '项目 3',
-        children: [{
-          label: '模块 3-1'
-        }, {
-          label: '模块 3-2'
-        }]
-      }],
+      data:[],
       defaultProps: {
         children: 'children',
         label: 'label'
-      }
+      },
     }
   },
   watch: {
@@ -115,11 +89,24 @@ export default {
         // this.getProject()
       }
     },
-    handleCheckChange(data, checked, indeterminate) {
-      console.log(data, checked, indeterminate);
-      if(data.id != undefined){
-        console.log("选中的叶子节点",data.id)
+    handleCheckChange(data, checked) {
+      // console.log("aaa", data, checked);
+      // console.log("aaa1", data.id);
+      if(data.id != undefined) {
+        console.log("操作的叶子节点", data.id, checked);
+        if(checked == true) {
+          this.form.cases.push(data.id)
+        } else {
+          // this.form.cases.remove(data.id)
+          // arr2.splice(1,2,'ttt');
+          for (var i = 0; i < this.form.cases.length; i++) {
+            if(this.form.cases[i] == data.id) {
+              this.form.cases.splice(i, 1);
+            }
+          }
+        }
       }
+      console.log("cases", this.form.cases)
     },
     // 选择监控
     handleNodeClick(data) {
@@ -129,7 +116,7 @@ export default {
     async initCaseTree() {
       const resp = await CaseApi.getCaseTree()
       console.log("获取用例树resp-->", resp)
-      this.data2 = resp.data
+      this.data = resp.data
     },
   }
 }
