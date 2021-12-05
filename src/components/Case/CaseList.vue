@@ -147,7 +147,7 @@ export default {
         this.isList = false
       } else {
         this.isList = true
-        this.caseId=0
+        this.caseId = 0
       }
     },
     //显示编辑窗口
@@ -182,7 +182,7 @@ export default {
           let deleteAfterPage = Math.ceil((this.total - 1) / this.query.size)
           let currentPage = this.query.page > deleteAfterPage ? deleteAfterPage : this.query.page
           this.query.page = currentPage < 1 ? 1 : currentPage
-          await this.initModule()
+          await this.initCase()
         } else {
           this.$message.error(resp.error.message)
         }
@@ -207,6 +207,7 @@ export default {
   height: 50px;
   text-align: left;
 }
+
 .foot-page {
   margin-top: 70px;
 }

@@ -65,11 +65,9 @@ export default {
     //判断是否新增
     createOrEdit() {
       if (this.pid === 0) {
-        console.log(this.pid)
         this.showTitle = "创建项目"
       } else {
         this.showTitle = "编辑项目"
-        console.log(this.pid)
         this.getProject()
       }
     },

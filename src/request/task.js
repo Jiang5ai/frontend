@@ -18,13 +18,18 @@ class TaskApi {
     }
 
     //更新任务接口
-    updateTask(tid){
-        return request.post('/v1/task/'+tid+'/update/')
+    updateTask(tid,data){
+        return request.post('/v1/task/'+tid+'/update/',data)
     }
 
     //删除任务接口
     deleteTask(tid){
         return request.delete('/v1/task/'+tid+'/delete/')
+    }
+
+    //运行任务
+    runTask(tid){
+        return request.get('/v1/task/'+tid+'/running/')
     }
 }
 

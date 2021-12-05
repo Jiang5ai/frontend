@@ -23,20 +23,6 @@
             align="center">
         </el-table-column>
 
-        <!--        <el-table-column-->
-        <!--            prop="describe"-->
-        <!--            label="描述"-->
-        <!--            min-width="25%"-->
-        <!--            align="center">-->
-        <!--        </el-table-column>-->
-
-        <!--        <el-table-column-->
-        <!--            prop="create_time"-->
-        <!--            label="创建时间"-->
-        <!--            min-width="30%"-->
-        <!--            align="center">-->
-        <!--        </el-table-column>-->
-
         <el-table-column
             prop="status"
             label="状态"
@@ -55,7 +41,8 @@
             label="操作"
             min-width="15%">
           <template slot-scope="scope">
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button @click="runTask(scope.row)" type="text" size="small">运行</el-button>
+            <el-button @click="showEdit(scope.row)" type="text" size="small">编辑</el-button>
             <el-button @click="deleteTask(scope.row)" type="text" size="small">删除</el-button>
           </template>
         </el-table-column>
@@ -101,6 +88,23 @@ export default {
     }
   },
   methods: {
+    //运行任务
+    async runTask(row){
+      const resp = await TaskApi.runTask(row.id)
+      if (resp.success){
+        this.$message.success("运行成功")
+        this.initTask()
+      }else{
+        this.$message.error("运行失败")
+      }
+    },
+    //显示编辑窗口
+    showEdit(row) {
+      console.log("row", row)
+      this.taskId = row.id
+      this.showDialog = true
+
+    },
     //修改每页显示个数
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`);
