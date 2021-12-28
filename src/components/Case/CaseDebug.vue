@@ -68,7 +68,7 @@
         <!--保存用例-->
         <el-collapse-item title="保存用例" name="2">
           <div style="margin-bottom: 10px;">
-            <el-select v-model="projectId" placeholder="请选择项目" @change="chanageProject()"
+            <el-select v-model="project_id" placeholder="请选择项目" @change="chanageProject()"
                        @visible-change="initProjectList">
               <el-option
                   v-for="(item, index) in projectOptions"
@@ -132,7 +132,7 @@ export default {
       activeJSON: 'first',
       activeNames: ['1'],
       projectOptions: [],
-      projectId: '',
+      project_id: '',
       moduleOptions: [],
     }
   },
@@ -170,8 +170,11 @@ export default {
     // 获取用例详情
     async initCaseInfo() {
       let resp = await CaseApi.getCase(this.cid)
-      console.log("用例详情----->",resp)
+      console.log("用例详情----->", resp)
       this.api = resp.data
+      this.project_id = resp.data.project_id
+      console.log("project_id---->",this.project_id)
+      console.log("module_id---->",this.api.module_id)
     },
     // 点击发送
     async clickSend() {
@@ -224,6 +227,7 @@ export default {
             label: ProjectList[i].name,
           })
         }
+        console.log("this.projectOptions------>",this.projectOptions)
       } else {
         this.$message.error(resp.error.message);
       }
@@ -233,7 +237,7 @@ export default {
     async chanageProject() {
       this.moduleOptions = []
       const query = {page: 1, size: 1000}
-      const resp = await ProjectApi.getModuleListByProject(this.projectId, query)
+      const resp = await ProjectApi.getModuleListByProject(this.project_id, query)
       console.log(resp)
       if (resp.success == true) {
         const ModuleList = resp.data.modulelist

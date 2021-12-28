@@ -2,45 +2,49 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Project from '../components/Project/Project.vue'
 import Module from '../components/Module/Module.vue'
-import testCase from '../components/Case/CaseList.vue'
-import testTask from '../components/Task/Task.vue'
+import CaseList from '../components/Case/CaseList.vue'
+import Task from '../components/Task/Task.vue'
+import Navigation from '../views/Navigation.vue'
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
     {
         path: '/',
-        name: 'Project',
-        component: Project
+        redirect: '/login'
     },
     {
-        path: '/Module',
-        name: 'Module',
-        component: Module
+        path: '/login',
+        name: 'Login',
+        component: Login
     },
     {
-        path: '/case',
-        name: 'testCase',
-        component: testCase
+        path: '/main',
+        name: 'Navigation',
+        component: Navigation,
+        children: [
+            {
+                // 当 /main/project 匹配成功，
+                // project 会被渲染在 Navigation 的 <router-view> 中
+                path: 'project',
+                component: Project
+            },
+            {
+                path: 'module',
+                component: Module
+            },
+            {
+                path: 'case',
+                component: CaseList
+            },
+            {
+                path: 'task',
+                component: Task
+            }
+        ]
     },
-    {
-        path: '/task',
-        name: 'testTask',
-        component: testTask
-    },
-    // {
-    //   path: '/about',
-    //   name: 'About',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    // }
-    // {
-    //     path: '/about',
-    //     name: 'About',
-    //     component: About
-    // },
+
 ]
 
 const router = new VueRouter({
@@ -48,5 +52,16 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
-
+// 导航守卫
+router.beforeEach((to, from, next) => {
+    if (to.path === '/login') { // 当路由为login时就直接下一步操作
+        next();
+    } else { // 否则就需要判断
+        if (sessionStorage.token) { // 如果有用户名就进行下一步操作
+            next()
+        } else {
+            next({path: '/login'}) // 没有用户名就跳转到login页面
+        }
+    }
+});
 export default router

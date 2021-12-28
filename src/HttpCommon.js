@@ -23,8 +23,10 @@ function makeRequest(requestType, url, dataOrParam, responseType, additionalHead
         header['Access-Control-Allow-Origin'] = '*'
         header['x-account-email'] = 'yuchou.zou@klook.com'
         header['x-account-fullname'] = 'yuchou.zou'
+        header['token'] = sessionStorage.token
     } else {
         header['Access-Control-Allow-Origin'] = '*'
+        header['token'] = sessionStorage.token
     }
 
     Object.keys(additionalHeader).forEach(key => {

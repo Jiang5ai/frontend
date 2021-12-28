@@ -9,32 +9,32 @@
           text-color="#fff"
           active-text-color="#4BD0FF">
         <!--项目管理-->
-        <router-link to="/">
-          <el-menu-item index="/">
+        <router-link to="/main/project">
+          <el-menu-item index="/main/project">
             <i class="el-icon-menu"></i>
             <span slot="title">项目管理</span>
           </el-menu-item>
         </router-link>
 
         <!--模块管理-->
-        <router-link to="/module">
-          <el-menu-item index="/module">
+        <router-link to="/main/module">
+          <el-menu-item index="/main/module">
             <i class="el-icon-s-management"></i>
-            <span slot="title" >模块管理</span>
+            <span slot="title">模块管理</span>
           </el-menu-item>
         </router-link>
 
         <!--用例管理-->
-        <router-link to="/case">
-          <el-menu-item index="/case">
+        <router-link to="/main/case">
+          <el-menu-item index="/main/case">
             <i class="el-icon-s-grid"></i>
             <span slot="title">用例管理</span>
           </el-menu-item>
         </router-link>
 
-        <router-link to="/task">
-          <!--任务管理-->
-          <el-menu-item index="/task">
+        <!--任务管理-->
+        <router-link to="/main/task">
+          <el-menu-item index="/main/task">
             <i class="el-icon-s-claim"></i>
             <span slot="title">任务管理</span>
           </el-menu-item>
@@ -44,15 +44,15 @@
 
     <el-container>
       <el-header style="text-align: right; font-size: 12px">
-        <el-dropdown>
+        <el-dropdown @command="handleCommand">
           <i class="el-icon-setting" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
+            <el-dropdown-item command="center">个人中心</el-dropdown-item>
+            <el-dropdown-item command="setting">设置</el-dropdown-item>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span>王小虎</span>
+        <span>{{ user.name }}</span>
       </el-header>
       <el-main>
         <router-view></router-view>
@@ -62,21 +62,41 @@
 </template>
 
 <script>
+import UserApi from "@/request/user";
 
 export default {
   data() {
-    const item = {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄'
-    };
     return {
-      tableData: Array(20).fill(item)
+      'user': {
+        "id": '',
+        "name": ''
+      }
     }
   },
   created() {
-    console.log(this.$route.path)
-  }
+    const user = sessionStorage.getItem('user')
+    // 字符串转json
+    this.user = JSON.parse(user)
+  },
+  methods: {
+    async handleCommand(command) {
+      if (command === 'logout') {
+        const data = {
+          'id': this.user.id,
+        }
+        const resp = await UserApi.logout(data)
+        console.log(resp)
+        if (resp.success) {
+          // 清缓存
+          sessionStorage.clear()
+          await this.$router.push({path: '/login'})
+        } else {
+          this.$message.error("退出失败");
+        }
+      }
+
+    }
+  },
 };
 </script>
 
